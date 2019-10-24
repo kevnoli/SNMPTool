@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SNMP</title>
+	<style type="text/css">
+		#chart-container {
+			width: 80%;
+			height: auto;
+		}
+	</style>
+		<script type="text/javascript" src="node_modules\jquery\dist\jquery.min.js"></script>
+		<script type="text/javascript" src="node_modules\chart.js\dist\Chart.bundle.js"></script>
+		<script type="text/javascript" src="node_modules\chart.js\dist\Chart.bundle.min.js"></script>
+	</head>
+	<body>
+		<div id="chart-container">
+			<canvas id="graphCanvas"></canvas>
+		</div>
+
+		<script>
+			$(document).ready(function () {
+				showGraph();
+			});
+
+			function showGraph()
+			{
+				{
+					$.post("snmp.php",
+						function (data)
+						{
+							var down = [];
+							var up = [];
+
+							for (var i in data) {
+								down.push(data.down);
+								up.push(data.up);
+							}
+							console.log(down);
+							console.log(up);
+							var chartdata = {
+								labels: "1",
+								datasets: [
+								{
+									label: 'Student Marks',
+									backgroundColor: '#49e2ff',
+									borderColor: '#46d5f1',
+									hoverBackgroundColor: '#CCCCCC',
+									hoverBorderColor: '#666666',
+									data: up
+								}
+								]
+							};
+
+							var graphTarget = $("#graphCanvas");
+
+							var barGraph = new Chart(graphTarget, {
+								type: 'line',
+								data: chartdata
+							});
+						});
+				}
+			}
+		</script>
+
+	</body>
+</html>
