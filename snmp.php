@@ -1,6 +1,8 @@
 <?php
+$ip = $_POST("ip");
+$comm = $_POST("comm")
 snmp_set_quick_print(1);
-$session = new SNMP(SNMP::VERSION_2c, "201.30.47.4", "public");
+$session = new SNMP(SNMP::VERSION_2c, $ip, $comm);
 $ifSpeed = $session->get("1.3.6.1.2.1.2.2.1.5.1");
 $delta_in = $session->get("1.3.6.1.2.1.2.2.1.10.1");
 $delta_out = $session->get("1.3.6.1.2.1.2.2.1.16.1");

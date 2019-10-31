@@ -1,8 +1,7 @@
 window.onload = function () {
-
-    var download = [{y: 0}];
-    var upload = [{y: 0}];
-    var chart = new CanvasJS.Chart("chartContainer",
+    let download = [{y: 0}];
+    let upload = [{y: 0}];
+    let chart = new CanvasJS.Chart("chartContainer",
     {
       data: [
       { 
@@ -18,22 +17,27 @@ window.onload = function () {
         dataPoints: upload
     }],
     axisX:{
-     minimum: 0,
-     interval: 1,
-     intervalType: "second"
- }
+        minimum: 0,
+        interval: 1,
+        intervalType: "second",
+    }
 });
-
-    chart.render();
-
-    $("#iniciarBtn").click(function () {
+    let atualizar = function(){
         download.push({ y: 25 - Math.random() * 10});
         upload.push({ y: 10 - Math.random() * 10});
-        chart.render();
+        
+       chart.render();
+   }
 
-    });
+   chart.render();
 
-    $("#pararBtn").click(function () {
-//TODO
-    });
+   let iniciar;
+
+   $("#iniciarBtn").click(function () {
+    iniciar = setInterval(function () { atualizar() }, 1000);
+});
+
+   $("#pararBtn").click(function () {
+    clearInterval(iniciar);
+});
 }
