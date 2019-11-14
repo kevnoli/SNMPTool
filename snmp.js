@@ -22,11 +22,36 @@ window.onload = function () {
         intervalType: "second",
     }
 });
+
+contador = 0;
     let atualizar = function(){
-        download.push({ y: 25 - Math.random() * 10});
-        upload.push({ y: 10 - Math.random() * 10});
-        
-       chart.render();
+        let enviar={
+            ip: $('#ip').val(),
+            comm:$('#comm').val(),
+        }
+        $.ajax({
+            type: "POST",
+            url: 'snmp.php',
+            data: enviar,
+            success: function(response)
+            {
+                response = JSON.parse(response);
+                
+                if(download.length>21){
+                    chart.options.axisX.minimum++;
+                    download.splice(0,1);
+                    upload.splice(0,1);
+                    chart.render();
+                    console.log(download);
+                }
+
+
+                download.push({x:contador, y: parseInt(response.down)}),
+                upload.push({x:contador, y:parseInt(response.up)})
+                contador++;
+                chart.render();
+           }
+       });
    }
 
    chart.render();
@@ -39,5 +64,17 @@ window.onload = function () {
 
    $("#pararBtn").click(function () {
     clearInterval(iniciar);
+});
+
+$("#limparBtn").click(function () {
+
+    console.log('teste');
+
+    chart.options.axisX.minimum+=download.length;
+    download.splice(0,download.length);
+    upload.splice(0,upload.length);
+
+
+    chart.render();
 });
 }
