@@ -1,6 +1,6 @@
 <?php
-$ip =  $_POST["ip"];
-$comm = $_POST["comm"];
+$ip =  $_GET["ip"];
+$comm = $_GET["comm"];
 snmp_set_quick_print(1);
 $session = new SNMP(SNMP::VERSION_2c, $ip, $comm);
 $ifSpeed = $session->get("1.3.6.1.2.1.2.2.1.5.1");
